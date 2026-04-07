@@ -1,0 +1,59 @@
+{
+  "name": "chgk-main",
+  "version": "0.0.1",
+  "description": "Система управления табло для Что? Где? Когда",
+  "author": "Rinat Farkhutdinov <Rinat.it2016@mail.ru>",
+  "nodecg": {
+    "compatibleRange": "^2.0.0",
+    "assetCategories": [
+      {
+        "name": "main",
+        "title": "Заставки и интро",
+        "allowedTypes": [
+          "mp4",
+          "mov",
+          "m4v",
+          "jpg",
+          "jpeg",
+          "png"
+        ]
+      },
+      {
+        "name": "games",
+        "title": "Материалы для игр (вопросы/ответы)",
+        "allowedTypes": [
+          "png",
+          "PNG",
+          "jpg",
+          "JPG",
+          "jpeg",
+          "JPEG",
+          "gif",
+          "GIF",
+          "mp4",
+          "MP4",
+          "webm",
+          "WEBM"
+        ]
+      }
+    ],
+    "dashboardPanels": [
+      {
+        "name": "chgk-main",
+        "title": "Управление табло ЧГК",
+        "width": 9,
+        "file": "chgk-main.html",
+        "headerColor": "#a23"
+      }
+    ],
+    "graphics": [
+      {
+        "file": "index.html",
+        "width": 1920,
+        "height": 1080,
+        "singleInstance": false
+      }
+    ]
+  },
+  "license": "MIT"
+}

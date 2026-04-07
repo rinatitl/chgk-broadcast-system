@@ -1,0 +1,237 @@
+<!doctype html>
+<html lang="ru">
+	<head>
+		<meta charset="UTF-8" />
+		<link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@700&display=swap" rel="stylesheet" />
+		<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+
+		<style>
+			@font-face {
+				font-family: "PFDinTextCompPro-Bold";
+				src: url("fonts/pfdintextcomppro-bold.woff2") format("woff2");
+			}
+
+			body {
+				margin: 0;
+				padding: 0;
+				overflow: hidden;
+				background: black;
+				font-family: "PFDinTextCompPro-Bold";
+			}
+
+			#container {
+				width: 1920px;
+				height: 1080px;
+				position: relative;
+			}
+
+			.layer {
+				position: absolute;
+				top: 0;
+				left: 0;
+				width: 1920px;
+				height: 1080px;
+			}
+
+			/* --- СЛОИ --- */
+			.base-layer {
+				z-index: 10;
+				background: #000;
+			}
+			.media-layer {
+				z-index: 20;
+			}
+			.scoreboard-layer {
+				z-index: 30;
+				pointer-events: none;
+			}
+
+			/* --- SCOREBOARD --- */
+			.scoreboard-container {
+				display: flex;
+				width: 100%;
+				height: 100%;
+			}
+			.half {
+				flex: 1;
+				display: flex;
+				align-items: center;
+				justify-content: center;
+			}
+			.half.left {
+				background-color: var(--primary);
+				color: var(--secondary);
+			}
+			.half.right {
+				background-color: var(--secondary);
+				color: var(--primary);
+			}
+			.digit {
+				font-size: 1000px;
+				line-height: 1;
+			}
+
+			/* Темы Лиг */
+			.scoreboard-layer.youth {
+				--primary: #ffffff;
+				--secondary: rgb(16, 52, 24);
+			}
+			.scoreboard-layer.amateur {
+				--primary: #ffffff;
+				--secondary: rgb(108, 29, 69);
+			}
+			.scoreboard-layer.corporate {
+				--primary: #e4a563;
+				--secondary: #a23;
+			}
+			.scoreboard-layer.monochrome,
+			.scoreboard-layer.plekhanov {
+				--primary: #ffffff;
+				--secondary: #000000;
+			}
+
+			/* --- MEDIA CONTENT --- */
+			.media-overlay {
+				width: 100%;
+				height: 100%;
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				background: black;
+			}
+			.content-fit {
+				max-width: 1920px;
+				max-height: 1080px;
+				width: 100%;
+				height: 100%;
+				object-fit: contain;
+			}
+			.content-cover {
+				width: 100%;
+				height: 100%;
+				object-fit: cover;
+			}
+
+			.media-wrapper {
+				position: relative;
+				width: 100%;
+				height: 100%;
+			}
+
+			.media-content {
+				position: absolute; /* ВАЖНО: элементы накладываются друг на друга */
+				top: 0;
+				left: 0;
+				width: 100%;
+				height: 100%;
+				display: flex;
+				justify-content: center;
+				align-items: center;
+				will-change: opacity; /* Оптимизация для GSAP */
+			}
+
+			.media-content img,
+			.media-content video {
+				max-width: 100%;
+				max-height: 100%;
+				object-fit: contain; /* Сохраняем пропорции */
+			}
+
+			.intro-layer {
+				position: absolute;
+				top: 0;
+				left: 0;
+				width: 1920px;
+				height: 1080px;
+				z-index: 9999; /* Поверх всего */
+				background: black;
+			}
+
+			.full-screen-video {
+				width: 100%;
+				height: 100%;
+				object-fit: cover;
+			}
+
+			/* Анимации Vue */
+			.dissolve-enter-active,
+			.dissolve-leave-active {
+				transition: opacity 0.2s ease;
+				position: absolute;
+			}
+			.dissolve-enter-from,
+			.dissolve-leave-to {
+				opacity: 0;
+			}
+		</style>
+	</head>
+	<body>
+		<div id="app" v-cloak>
+			<div id="container">
+				<div class="layer base-layer">
+					<transition name="dissolve">
+						<div class="media-overlay">
+							<img class="content-cover" v-if="!displayState.activeMedia.id" :src="currentCoverUrl" />
+						</div>
+					</transition>
+				</div>
+
+				<div class="layer media-layer">
+					<transition
+						@enter="onMediaEnter"
+						@leave="onMediaLeave"
+						:css="false"
+						name="dissolve"
+						class="media-wrapper">
+						<div
+							v-if="displayState.activeMedia.id"
+							class="media-content"
+							:key="displayState.activeMedia.id">
+							<img
+								class="content-fit"
+								v-if="displayState.activeMedia.type === 'image'"
+								:src="displayState.activeMedia.fileUrl" />
+							<video
+								class="content-fit"
+								v-else-if="displayState.activeMedia.type === 'video'"
+								:src="displayState.activeMedia.fileUrl"
+								autoplay
+								playsinline></video>
+						</div>
+					</transition>
+				</div>
+
+				<div class="layer scoreboard-layer" :class="gameState.currentTheme">
+					<transition :css="false">
+						<div class="scoreboard-container">
+							<div class="half left">
+								<div class="digit">{{ score.experts }}</div>
+							</div>
+							<div class="half right">
+								<div class="digit">{{ score.sectors }}</div>
+							</div>
+						</div>
+					</transition>
+				</div>
+
+				<transition name="dissolve">
+					<div v-if="displayState.isIntroPlaying" class="intro-layer">
+						<video
+							:key="gameState.currentTheme"
+							ref="introVideo"
+							:src="currentIntroUrl"
+							@ended="onIntroEnded"
+							autoplay
+							playsinline
+							class="full-screen-video"></video>
+						{{ currentIntroUrl }}
+					</div>
+				</transition>
+			</div>
+		</div>
+
+		<script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+		<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+		<script src="index.js"></script>
+	</body>
+</html>

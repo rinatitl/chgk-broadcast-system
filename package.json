@@ -1,0 +1,17 @@
+{
+  "name": "chgk-system",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodecg start"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "dependencies": {
+    "multer": "^2.1.1",
+    "nodecg": "^2.6.4"
+  }
+}

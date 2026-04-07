@@ -1,0 +1,15 @@
+{
+    "logging": {
+        "console": {
+            "enabled": true
+        }
+    },
+    "bundles": {
+        "enabled": [
+            "chgk-main"
+        ]
+    },
+    "assets": {
+        "enabled": true
+    }
+}

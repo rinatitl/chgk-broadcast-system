@@ -1,0 +1,141 @@
+body {
+	font-family: sans-serif;
+	background: #2c3e50;
+	color: white;
+	padding: 10px;
+}
+
+.no-select {
+	/* Запрещаем выделение текста */
+	-webkit-user-select: none; /* Safari */
+	-ms-user-select: none; /* IE 10+ */
+	user-select: none; /* Стандарт */
+
+	/* Дополнительно: меняем курсор на обычную стрелку, 
+       чтобы текст не ощущался как текстовое поле */
+	cursor: pointer;
+}
+
+.btn-group-flex {
+	display: flex;
+	gap: 5px;
+}
+
+.score-headers {
+	display: flex;
+	justify-content: space-between;
+	width: calc(100% - 3rem);
+	margin: auto;
+}
+
+.score-headers > span {
+	width: 50%;
+	text-align: center;
+}
+
+.scores {
+	display: flex;
+	justify-content: space-between;
+	text-align: center;
+	font-size: 70px;
+	cursor: pointer;
+}
+
+.vertical-btn-group {
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+.side-button {
+	padding: 0.75rem 0.5rem;
+	font-size: 1rem;
+	line-height: 1.5;
+	border: 1px solid #fff;
+	flex: 1;
+	background: transparent;
+}
+
+.side-button:first-child {
+	border-bottom: 0px;
+}
+
+.side-button-left:first-child {
+	border-radius: 0.375rem 0 0 0;
+}
+
+.side-button-left:last-child {
+	border-radius: 0 0 0 0.375rem;
+}
+
+.side-button-right:first-child {
+	border-radius: 0 0.375rem 0 0;
+}
+
+.side-button-right:last-child {
+	border-radius: 0 0 0.375rem 0;
+}
+
+.left-score {
+	background: #fff;
+	color: blue;
+	width: 50%;
+}
+
+.right-score {
+	background: blue;
+	color: #fff;
+	width: 50%;
+	border: 1px solid #fff;
+}
+
+.sectors-container {
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	justify-content: space-between;
+	gap: 20px;
+}
+
+.sector {
+	width: 90px;
+	padding: 5px 0;
+}
+
+.sector-header {
+	text-align: center;
+}
+
+.sector-body {
+	display: flex;
+	justify-content: space-between;
+	gap: 5px;
+}
+
+.sector-body > * {
+	width: 50%;
+}
+
+.remove-sector {
+	display: flex;
+}
+
+.remove-sector > * {
+	width: 100%;
+}
+
+.iframe-container {
+	width: 383px; /* Реальный размер, который должен занимать блок */
+	height: 216px;
+	overflow: hidden;
+}
+
+.scaled-iframe {
+	width: 1920px; /* Увеличиваем размер самого фрейма в 2 раза */
+	height: 1080px;
+	border: none;
+
+	/* Масштабируем до 0.5 (уменьшение в 2 раза) */
+	transform: scale(0.2);
+	transform-origin: 0 0; /* Важно: точка трансформации — верхний левый угол */
+}

@@ -1,0 +1,33 @@
+# Зависимости
+/node_modules/
+npm-debug.log
+
+# Логи и база данных NodeCG
+/logs/
+/db/
+/cfg/*.json
+!/cfg/nodecg.json
+
+# --- РАБОТА С АССЕТАМИ ---
+
+# Игнорируем вообще всё внутри папки games
+**/assets/games/**/*
+
+# Разрешаем только .gitkeep
+!**/assets/games/.gitkeep
+
+# Разрешаем папку main
+!**/assets/main/
+
+# Игнорируем мусор внутри разрешенной папки main
+/assets/main/.DS_Store
+/assets/main/Thumbs.db
+
+# --- СИСТЕМНОЕ ---
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+/chrome_profile_graphics/
+/nodecg_chrome_profile/
