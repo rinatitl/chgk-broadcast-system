@@ -51,12 +51,16 @@
 				display: flex;
 				width: 100%;
 				height: 100%;
+				overflow: visible;
+				position: relative;
 			}
 			.half {
 				flex: 1;
 				display: flex;
 				align-items: center;
 				justify-content: center;
+				position: relative;
+				overflow: visible;
 			}
 			.half.left {
 				background-color: var(--primary);
@@ -69,6 +73,10 @@
 			.digit {
 				font-size: 1000px;
 				line-height: 1;
+				position: absolute;
+				display: block;
+				will-change: transform, opacity;
+				z-index: 35;
 			}
 
 			/* Темы Лиг */
@@ -205,10 +213,14 @@
 					<transition :css="false">
 						<div class="scoreboard-container">
 							<div class="half left">
-								<div class="digit">{{ score.experts }}</div>
+								<transition @enter="digitEnter" @leave="digitLeave" :css="false">
+									<div class="digit" :key="score.experts">{{ score.experts }}</div>
+								</transition>
 							</div>
 							<div class="half right">
-								<div class="digit">{{ score.sectors }}</div>
+								<transition @enter="digitEnter" @leave="digitLeave" :css="false">
+									<div class="digit" :key="score.sectors">{{ score.sectors }}</div>
+								</transition>
 							</div>
 						</div>
 					</transition>

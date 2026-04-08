@@ -23,6 +23,7 @@ createApp({
 			assetsGames: [],
 			assetsMain: [],
 			isSynced: false,
+			direction: "up",
 		};
 	},
 	watch: {
@@ -58,6 +59,12 @@ createApp({
 					}
 				});
 			}
+		},
+		"score.experts"(newVal, oldVal) {
+			this.direction = newVal > oldVal ? "up" : "down";
+		},
+		"score.sectors"(newVal, oldVal) {
+			this.direction = newVal > oldVal ? "up" : "down";
 		},
 	},
 	methods: {
@@ -97,6 +104,48 @@ createApp({
 		},
 		onIntroEnded() {
 			displayStateRep.value.isIntroPlaying = false;
+		},
+		digitEnter(el, done) {
+			// Если еще не синхронизировались — просто показываем цифру мгновенно
+			if (!this.isSynced) {
+				gsap.set(el, { y: 0, opacity: 1 });
+				done();
+				return;
+			}
+
+			const dist = window.innerHeight;
+			const startY = this.direction === "up" ? dist : -dist;
+
+			gsap.fromTo(
+				el,
+				{ y: startY, opacity: 0 },
+				{
+					y: 0,
+					opacity: 1,
+					duration: 0.8,
+					ease: "power3.out",
+					onComplete: done,
+				},
+			);
+		},
+
+		digitLeave(el, done) {
+			// Если не синхронизировались — удаляем старую цифру мгновенно без анимации
+			if (!this.isSynced) {
+				done();
+				return;
+			}
+
+			const dist = window.innerHeight;
+			const endY = this.direction === "up" ? -dist : dist;
+
+			gsap.to(el, {
+				y: endY,
+				opacity: 0,
+				duration: 0.7,
+				ease: "power3.out",
+				onComplete: done,
+			});
 		},
 	},
 	computed: {
