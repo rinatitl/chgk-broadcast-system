@@ -33,16 +33,17 @@ if not %YANDEX_EXE% == "" (
 
 :: --- [4] ЗАПУСК ГРАФИКИ (Chrome) ---
 echo [3/3] Opening Graphics...
-:: Если второго экрана нет, убери или закомментируй --window-position
-:: Пока оставим 0,0 чтобы ты видел окно на основном мониторе
+:: Если второго экрана нет, используй 0,0. Если графика должна быть на втором — ставь 1920,0
 if not %CHROME_EXE% == "" (
     start "" %CHROME_EXE% ^
       --app="http://localhost:9090/bundles/chgk-main/graphics/index.html" ^
-      --window-position=0,0 ^
+      --kiosk ^
+      --window-position=1920,0 ^
       --window-size=1920,1080 ^
       --autoplay-policy=no-user-gesture-required ^
       --user-data-dir="%CD%\chrome_profile_graphics" ^
-      --no-first-run
+      --no-first-run ^
+      --disable-features=Translate
 ) else (
     echo ERROR: Chrome NOT FOUND! Please install Google Chrome.
     pause
