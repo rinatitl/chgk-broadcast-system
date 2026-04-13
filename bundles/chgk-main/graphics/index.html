@@ -180,7 +180,7 @@
 				<div class="layer base-layer">
 					<transition name="dissolve">
 						<div class="media-overlay">
-							<img class="content-cover" v-if="!displayState.activeMedia.id" :src="currentCoverUrl" />
+							<img class="content-cover" v-if="shouldShowCover" :src="currentCoverUrl" />
 						</div>
 					</transition>
 				</div>

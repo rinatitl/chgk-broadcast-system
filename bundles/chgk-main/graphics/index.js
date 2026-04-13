@@ -24,6 +24,7 @@ createApp({
 			assetsMain: [],
 			isSynced: false,
 			direction: "up",
+			shouldShowCover: true,
 		};
 	},
 	watch: {
@@ -65,6 +66,18 @@ createApp({
 		},
 		"score.sectors"(newVal, oldVal) {
 			this.direction = newVal > oldVal ? "up" : "down";
+		},
+		"displayState.activeMedia.id"(newId) {
+			if (newId) {
+				// Если медиа появилось — обложку убираем мгновенно
+				this.shouldShowCover = false;
+			} else {
+				// Если медиа убрали — ждем 0.8с (пока закроется счет),
+				// прежде чем показать обложку обратно
+				setTimeout(() => {
+					this.shouldShowCover = true;
+				}, 800);
+			}
 		},
 	},
 	methods: {
@@ -183,5 +196,6 @@ createApp({
 				if (newVal) this.assetsMain = clean(newVal) || [];
 			});
 		});
+		this.shouldShowCover = !this.displayState.activeMedia.id;
 	},
 }).mount("#app");
